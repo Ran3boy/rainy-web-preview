@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env*
+.DS_Store
+.21st/
+.impeccable/
+PRODUCT.md
+DESIGN.md
+preview-brief.md
