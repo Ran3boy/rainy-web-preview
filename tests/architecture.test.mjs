@@ -1,0 +1,8 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {categories,serviceItems,pageMetadata,legalRoutes} from '../src/serviceArchitecture.ts';
+test('five parent directions and fifty unique individual services',()=>{assert.equal(categories.length,5);assert.equal(serviceItems.length,50);assert.equal(new Set(serviceItems.map(i=>i.id)).size,50);assert.equal(new Set(serviceItems.map(i=>i.name)).size,50);assert.deepEqual(['development','seo','behavioral-factors','maps'].map(c=>serviceItems.filter(i=>i.category===c).length),[20,16,5,9]);});
+test('inventory metadata complete; no automatic child landings',()=>{for(const item of serviceItems){assert.ok(item.shortDescription.length>30);assert.ok(item.capabilities.length);assert.equal(item.status,'inline');assert.equal(item.detailRoute,undefined);assert.ok(item.relatedItems.every(id=>serviceItems.some(i=>i.id===id)));}});
+test('sixteen unique implemented routes with metadata and three legal drafts',()=>{assert.equal(Object.keys(pageMetadata).length,16);assert.equal(legalRoutes.length,3);for(const c of categories){assert.ok(pageMetadata[c.route]);assert.ok(c.sections.length>=3);assert.ok(c.related.every(id=>categories.some(c=>c.id===id)));}assert.ok(pageMetadata['/contacts/']);assert.equal(Object.keys(pageMetadata).filter(p=>p.includes('/blog/')).length,0);});
+test('preserved homepage components, no contact delivery or analytics invention',()=>{const home=readFileSync('src/Home.tsx','utf8');assert.match(home,/<Scene/);assert.match(home,/<ServiceDemos/);const pages=readFileSync('src/StructurePages.tsx','utf8');assert.doesNotMatch(pages,/fetch\(|XMLHttpRequest|mailto:|dangerouslySetInnerHTML/);assert.match(pages,/ничего не отправляет/);});

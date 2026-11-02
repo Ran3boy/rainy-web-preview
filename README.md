@@ -1,5 +1,13 @@
 # Rainy Web 2.0 — canonical website preview
 
+## Структура услуг — 2 ноября 2026
+
+Каталог `/services/` и пять направлений: `development`, `seo`, `geo-aeo`, `behavioral-factors`, `maps`. Все 50 исходных услуг сохранены как раскрываемые элементы, без автоматических дочерних landing pages. Общая модель, описания и metadata — `src/serviceArchitecture.ts`; страницы — `src/StructurePages.tsx`, дополнения текущего дизайна — `src/architecture.css`.
+
+Добавлены `/about/`, `/process/`, `/contacts/` с локальным помощником брифа и три legal-маршрута со статусом подготовки. Старые маршруты главной и кейсов сохранены. Статические точки входа всех 16 маршрутов создаются из общей metadata. Неизвестные адреса показывают 404. Preview остаётся noindex; это не SSR/production SEO.
+
+Карта будущих URL и статусы_IMPLEMENTED / PLANNED / FUTURE SEO CANDIDATE_ сохранены в проектном `website-structure-without-semantics.md`. Семантика, частотности, Wordstat и новое исследование конкурентов в этом проходе не выполнялись. Физические офисы, платная реклама и неподтверждённые результаты не заявлены.
+
 Демонстрационный статический сайт, не production. React / TypeScript / Vite. Без сервера, базы данных, отправки форм и счётчиков аналитики.
 
 ## Запуск

@@ -3,6 +3,7 @@ import {Link,useSearchParams} from 'react-router-dom';
 import {ArrowUpRight,ArrowDown,ArrowRight,Pause,Play,Layers,Code2,Search,MousePointer2,Check,Plus,Minus} from 'lucide-react';
 import Scene,{type Layer} from './Sculpture';
 import ServiceDemos,{services,type ServiceId} from './ServiceDemos';
+import {categories} from './serviceArchitecture';
 import {asset,projects,processSteps} from './data';
 import {Count,type Open} from './ui';
 const layerCopy={look:['Внешний вид — только начало.','Характер, свет и движение. Настоящая 3D-геометрия, а не видео.'],structure:['За формой есть система.','Переключили материал на каркас: та же геометрия, другой слой.'],search:['Чтобы находили не только красивое.','Содержание, структура и доступность — основа поисковой работы.']};
@@ -20,7 +21,7 @@ export default function Home({open}:{open:Open}){
       <section className="services-section" id="services" aria-labelledby="services-heading">
         <div className="container"><div className="section-intro"><h2 id="services-heading">Не набор услуг.<br/><span>Возможности вашего сайта.</span></h2><p>Выберите направление.<br/>Попробуйте, что за ним стоит.</p></div>
           <div className="service-workbench"><div className="service-selector" role="tablist" aria-label="Направления услуг">{services.map((s,i)=><button key={s.id} id={`tab-${s.id}`} role="tab" aria-selected={active===s.id} aria-controls="service-panel" tabIndex={active===s.id?0:-1} onClick={()=>chooseService(s.id)} onKeyDown={e=>{const next=e.key==='ArrowDown'||e.key==='ArrowRight'?(i+1)%services.length:e.key==='ArrowUp'||e.key==='ArrowLeft'?(i+services.length-1)%services.length:e.key==='Home'?0:e.key==='End'?services.length-1:null;if(next!==null){e.preventDefault();chooseService(services[next].id);document.getElementById(`tab-${services[next].id}`)?.focus();}}}><span>{s.name}</span><ArrowUpRight size={21}/></button>)}</div>
-            <div className="service-panel" id="service-panel" role="tabpanel" aria-labelledby={`tab-${active}`}><div className="service-copy"><h3>{services.find(s=>s.id===active)!.line}</h3><p>{services.find(s=>s.id===active)!.body}</p></div><ServiceDemos active={active}/><div className="service-result"><Check size={18}/><p>{services.find(s=>s.id===active)!.result}</p></div></div>
+            <div className="service-panel" id="service-panel" role="tabpanel" aria-labelledby={`tab-${active}`}><div className="service-copy"><h3>{services.find(s=>s.id===active)!.line}</h3><p>{services.find(s=>s.id===active)!.body}</p></div><ServiceDemos active={active}/><Link className="text-action" to={categories.find(c=>c.demo===active)!.route}>Состав работ и условия направления<ArrowUpRight size={18}/></Link><div className="service-result"><Check size={18}/><p>{services.find(s=>s.id===active)!.result}</p></div></div>
           </div>
           <div className="service-bottom"><Link className="text-action" to="/services/">Все 50 услуг<ArrowUpRight size={20}/></Link><p>Нужна отдельная задача, а не сайт целиком?<br/>Начнём с того, что важно сейчас.</p><a className="text-action" href="#contact">Обсудить вашу задачу <ArrowUpRight size={20}/></a></div>
         </div>
