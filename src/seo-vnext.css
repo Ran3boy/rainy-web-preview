@@ -1,0 +1,350 @@
+/* SEO refinement: early evidence and the existing service architecture. */
+.seo-next .seo-evidence {
+  padding-top: 0;
+  scroll-margin-top: 110px;
+}
+
+.seo-next .workflow-output h3 {
+  margin-top: 0;
+}
+
+.seo-next .seo-stage-caption {
+  margin-top: 14px;
+  color: #535b50;
+  font-size: 12px;
+}
+
+.seo-next .seo-group-picker {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-block: 1px solid var(--line);
+  gap: 28px;
+}
+
+.seo-next .seo-group-picker button {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-content: space-between;
+  gap: 16px;
+  min-height: 124px;
+  padding: 24px 0;
+  text-align: left;
+  color: var(--muted);
+}
+
+.seo-next .seo-group-picker button > span {
+  grid-column: 1 / -1;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.seo-next .seo-group-picker button > small {
+  font-size: 12px;
+}
+
+.seo-next .seo-group-picker button > svg {
+  color: var(--copper);
+  opacity: 0;
+}
+
+.seo-next .seo-group-picker button[aria-pressed=true] {
+  color: var(--text);
+}
+
+.seo-next .seo-group-picker button[aria-pressed=true]::after {
+  position: absolute;
+  content: '';
+  inset: auto 0 -1px;
+  height: 2px;
+  background: var(--copper);
+}
+
+.seo-next .seo-group-picker button[aria-pressed=true] > svg {
+  opacity: 1;
+}
+
+.seo-next .seo-group-panel {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  gap: 8%;
+  padding-top: 38px;
+}
+
+.seo-next .seo-group-panel[hidden],
+.seo-next .seo-task-output > [hidden] {
+  display: none;
+}
+
+.seo-next .seo-task-picker {
+  align-self: start;
+}
+
+.seo-next .seo-task-picker button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 68px;
+  padding: 18px 0;
+  gap: 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.seo-next .seo-task-picker button:first-child {
+  border-top: 1px solid var(--line);
+}
+
+.seo-next .seo-task-picker button svg {
+  flex-shrink: 0;
+  color: var(--copper);
+  opacity: 0;
+}
+
+.seo-next .seo-task-picker button[aria-pressed=true] {
+  color: var(--text);
+}
+
+.seo-next .seo-task-picker button[aria-pressed=true] svg {
+  opacity: 1;
+}
+
+.seo-next .seo-task-output {
+  min-width: 0;
+  min-height: 320px;
+  padding: 4px 0 20px;
+}
+
+.seo-next .seo-task-output h3 {
+  max-width: 23ch;
+  font-size: clamp(28px, 2.6vw, 38px);
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.seo-next .seo-task-description {
+  margin-top: 24px;
+  color: var(--vn-copy);
+  font-size: 16px;
+  max-width: 48ch;
+}
+
+.seo-next .seo-task-conditions {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 13px;
+  max-width: 54ch;
+}
+
+.seo-next .seo-task-output .vn-link {
+  margin-top: 20px;
+  font-size: 13px;
+}
+
+.seo-next .seo-scope-close {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.seo-next .seo-scope-close p {
+  color: var(--muted);
+  max-width: 57ch;
+  font-size: 14px;
+}
+
+.seo-next .seo-scope-close .vn-link {
+  flex-shrink: 0;
+  font-size: 13px;
+}
+
+.seo-next .seo-ownership {
+  display: flex;
+  gap: 18px;
+  padding: 0 0 52px;
+  max-width: 78ch;
+}
+
+.seo-next .seo-ownership > svg {
+  flex-shrink: 0;
+  color: var(--copper);
+  margin-top: 2px;
+}
+
+.seo-next .seo-ownership p {
+  color: var(--vn-copy);
+  font-size: 14px;
+}
+
+@media (hover: hover) {
+  .seo-next .seo-group-picker button:hover,
+  .seo-next .seo-task-picker button:hover {
+    color: var(--copper);
+  }
+}
+
+@media (max-width: 1000px) {
+  .seo-next .seo-group-picker {
+    gap: 20px;
+  }
+
+  .seo-next .seo-group-picker button > span {
+    font-size: 15px;
+  }
+
+  .seo-next .seo-group-panel {
+    gap: 6%;
+  }
+
+  .seo-next .seo-task-picker button {
+    font-size: 14px;
+  }
+
+  .seo-next .seo-scope-close {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 700px) {
+  .seo-next .seo-group-picker {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 24px;
+    border-bottom: 0;
+  }
+
+  .seo-next .seo-group-picker button {
+    min-height: 118px;
+    padding: 18px 0;
+    gap: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .seo-next .seo-group-picker button[aria-pressed=true]::after {
+    bottom: -1px;
+  }
+
+  .seo-next .seo-group-picker button > span {
+    font-size: 14px;
+  }
+
+  .seo-next .seo-group-picker button > small {
+    font-size: 11px;
+  }
+
+  .seo-next .seo-group-panel {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    padding-top: 28px;
+  }
+
+  .seo-next .seo-task-picker button {
+    min-height: 58px;
+    padding: 16px 0;
+    font-size: 14px;
+  }
+
+  .seo-next .seo-task-output {
+    min-height: 0;
+    padding: 0;
+  }
+
+  .seo-next .seo-task-output h3 {
+    font-size: 27px;
+  }
+
+  .seo-next .seo-task-description {
+    margin-top: 18px;
+    font-size: 14px;
+  }
+
+  .seo-next .seo-task-conditions {
+    margin-top: 16px;
+    font-size: 12px;
+  }
+
+  .seo-next .seo-scope-close {
+    display: block;
+    margin-top: 28px;
+    padding-top: 22px;
+  }
+
+  .seo-next .seo-scope-close p {
+    font-size: 13px;
+  }
+
+  .seo-next .seo-scope-close .vn-link {
+    margin-top: 12px;
+    font-size: 12px;
+  }
+
+  .seo-next .workflow-track {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 24px;
+    row-gap: 0;
+  }
+
+  .seo-next .workflow-track li:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .seo-next .workflow-track button {
+    grid-template-columns: 24px minmax(0, 1fr);
+    align-content: start;
+    align-items: start;
+    min-height: 126px;
+    padding: 18px 0;
+    gap: 8px;
+  }
+
+  .seo-next .workflow-track button > span {
+    position: static;
+    width: 24px;
+    height: 24px;
+  }
+
+  .seo-next .workflow-track button > strong {
+    font-size: 15px;
+    line-height: 24px;
+  }
+
+  .seo-next .workflow-track button > p {
+    grid-column: 2;
+    font-size: 11px;
+    max-width: 19ch;
+  }
+
+  .seo-next .workflow-track li:last-child button {
+    min-height: 100px;
+  }
+
+  .seo-next .workflow-track li:last-child button > p {
+    max-width: none;
+  }
+
+  .seo-next .workflow-output h3 {
+    margin-top: 0;
+  }
+
+  .seo-next .seo-stage-caption {
+    font-size: 11px;
+    margin-top: 12px;
+  }
+
+  .seo-next .seo-ownership {
+    padding: 26px 0 38px;
+    gap: 14px;
+  }
+
+  .seo-next .seo-ownership p {
+    font-size: 13px;
+  }
+}

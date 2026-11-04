@@ -3,7 +3,7 @@ import {createRoot} from 'react-dom/client';
 import {BrowserRouter} from 'react-router-dom';
 import '@fontsource/onest/latin-400.css';import '@fontsource/onest/latin-500.css';import '@fontsource/onest/latin-600.css';
 import '@fontsource/onest/cyrillic-400.css';import '@fontsource/onest/cyrillic-500.css';import '@fontsource/onest/cyrillic-600.css';
-import App from './App';import './styles.css';import './architecture.css';import './v-next.css';
+import App from './App';import './styles.css';import './architecture.css';import './v-next.css';import './process-vnext.css';import './seo-vnext.css';
 const base=import.meta.env.BASE_URL.replace(/\/$/,'');
 if(location.hash.startsWith('#/'))history.replaceState(null,'',base+location.hash.slice(1));
 createRoot(document.getElementById('root')!).render(<StrictMode><BrowserRouter basename={base}><App/></BrowserRouter></StrictMode>);
