@@ -25,24 +25,24 @@ export default function Scene({layer,paused}:{layer:Layer;paused:boolean}) {
         renderer.toneMapping=T.ACESFilmicToneMapping;
         el.append(renderer.domElement);
         const scene=new T.Scene(), studio=new T.Scene();
-        studio.background=new T.Color(0x393a3c);
+        studio.background=new T.Color(0x434548);
         const disposable:Array<{dispose:()=>void}>=[];
         function panel(w:number,h:number,x:number,y:number,z:number,color:number,power:number) {
           const geo=new T.PlaneGeometry(w,h);
           const mat=new T.MeshBasicMaterial({color:new T.Color(color).multiplyScalar(power),side:T.DoubleSide});
           const mesh=new T.Mesh(geo,mat);mesh.position.set(x,y,z);mesh.lookAt(0,0,0);studio.add(mesh);disposable.push(geo,mat);
         }
-        panel(1.3,6,-3,2,2,0xffffff,5);panel(.6,5,3,1,1,0xffffff,4);
-        panel(5,1.6,0,5,-1,0xffffff,3);panel(1.2,1.5,3,-1,-2,0xc27d5c,1.1);
-        panel(4.5,1.2,-1,2.6,4,0xffffff,3);
+        panel(1.5,6,-3,2,2,0xffffff,4.6);panel(.8,5,3,1,1,0xffffff,4);
+        panel(5,1.8,0,5,-1,0xffffff,3.2);panel(.8,1.3,3,-1,-2,0xc27d5c,.9);
+        panel(4.5,1.2,-1,2.6,4,0xffffff,3.4);
         const pmrem=new T.PMREMGenerator(renderer),env=pmrem.fromScene(studio,.06);
         scene.environment=env.texture;
         const light=new T.DirectionalLight(0xffffff,2);light.position.set(-3,4,5);scene.add(light);
-        const camera=new T.PerspectiveCamera(31,1,.01,100);camera.position.z=4.9;
+        const camera=new T.PerspectiveCamera(31,1,.01,100);camera.position.z=4.7;
         const pivot=new T.Group();scene.add(pivot);
         const materials:MeshPhysicalMaterial[]=[];
-        let frame=0,last=0,visible=true,px=0,py=0;
-        const resize=new ResizeObserver(()=>{const b=el.getBoundingClientRect();if(b.width&&b.height){renderer.setSize(b.width,b.height);camera.aspect=b.width/b.height;camera.updateProjectionMatrix();}});resize.observe(el);
+        let frame=0,last=0,visible=true,px=0,py=0,dirty=true;
+        const resize=new ResizeObserver(()=>{const b=el.getBoundingClientRect();if(b.width&&b.height){renderer.setSize(b.width,b.height);camera.aspect=b.width/b.height;camera.updateProjectionMatrix();dirty=true;}});resize.observe(el);
         const io=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;});io.observe(el);
         const move=(e:PointerEvent)=>{if(e.pointerType==='mouse'&&innerWidth>800){const b=el.getBoundingClientRect();px=(e.clientX-b.left)/b.width-.5;py=(e.clientY-b.top)/b.height-.5;}};
         const leave=()=>{px=py=0;};el.addEventListener('pointermove',move);el.addEventListener('pointerleave',leave);
@@ -51,22 +51,31 @@ export default function Scene({layer,paused}:{layer:Layer;paused:boolean}) {
         if(gone){release();return;}
         const model=gltf.scene;
         model.position.sub(new T.Box3().setFromObject(model).getCenter(new T.Vector3()));
-        model.traverse(o=>{if(o instanceof T.Mesh){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.dispose());const mat=new T.MeshPhysicalMaterial({color:0x333538,metalness:1,roughness:.16,clearcoat:.5,clearcoatRoughness:.06});o.material=mat;materials.push(mat);}});
+        model.traverse(o=>{if(o instanceof T.Mesh){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.dispose());const mat=new T.MeshPhysicalMaterial({color:0x414348,metalness:1,roughness:.19,clearcoat:.5,clearcoatRoughness:.08});o.material=mat;materials.push(mat);}});
         pivot.add(model);
+        pivot.rotation.set(.14,-.3,-.12);
+        const firstSize=el.getBoundingClientRect();
+        if(firstSize.width&&firstSize.height){renderer.setSize(firstSize.width,firstSize.height);camera.aspect=firstSize.width/firstSize.height;camera.updateProjectionMatrix();}
+        renderer.render(scene,camera);
         let lastLayer='';
         function animate(time:number) {
           frame=requestAnimationFrame(animate);
-          if(!visible||document.hidden||time-last<33)return;
+          if(!visible||document.hidden||time-last<(innerWidth<600?50:33))return;
           last=time;
           const current=state.current;
-          if(lastLayer!==current.layer){materials.forEach(m=>{m.wireframe=current.layer==='structure';m.color.set(current.layer==='structure'?0xa9a9a1:0x333538);m.roughness=current.layer==='search'?.25:.16;});lastLayer=current.layer;}
+          const changed=lastLayer!==current.layer;
+          if(changed){materials.forEach(m=>{m.wireframe=current.layer==='structure';m.color.set(current.layer==='structure'?0xa9a9a1:0x414348);m.roughness=current.layer==='search'?.25:.19;});lastLayer=current.layer;}
           const still=current.paused||reduced.matches;
           const target=current.layer==='structure'?.25:current.layer==='search'?-.7:-.3;
-          pivot.rotation.y+=(target+(still?0:Math.sin(time/10000)*.11+px*.22)-pivot.rotation.y)*.06;
+          const nextY=target+(still?0:Math.sin(time/10000)*.09+px*.18);
+          if(still&&!changed&&!dirty&&Math.abs(nextY-pivot.rotation.y)<.0001)return;
+          pivot.rotation.y+=(nextY-pivot.rotation.y)*.06;
           pivot.rotation.x=.14+(still?0:Math.sin(time/8000)*.035+py*.09);
           pivot.rotation.z=-.12;
           pivot.position.y=still?0:Math.sin(time/6000)*.035;
+          light.position.x+=( -3+(still?0:px*.8)-light.position.x)*.04;
           renderer.render(scene,camera);
+          dirty=false;
         }
         frame=requestAnimationFrame(animate);setStatus('ready');
       } catch {cleanup();if(!gone)setStatus('fallback');}
@@ -77,6 +86,5 @@ export default function Scene({layer,paused}:{layer:Layer;paused:boolean}) {
   return <div className={`liquid-scene layer-${layer} scene-${status}`} ref={host} role="img" aria-label={`Liquid Nexus: ${layer==='look'?'чёрный хром':layer==='structure'?'геометрический каркас':'поисковый слой'}`}>
     <img src={asset('sculpture.png')} alt="" fetchPriority="high"/>
     {layer==='search'&&<div className="scene-annotations" aria-hidden="true"><span>Содержание</span><span>Структура</span><span>Доступность</span></div>}
-    {status==='fallback'&&<small className="fallback-label">Статичный режим · без WebGL</small>}
   </div>;
 }
